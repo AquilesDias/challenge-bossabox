@@ -4,6 +4,7 @@ import com.aquilesdias.challengebossabox.domain.Usuario;
 import com.aquilesdias.challengebossabox.domain.dto.CredentialDTO;
 import com.aquilesdias.challengebossabox.domain.dto.LoginResponseDTO;
 import com.aquilesdias.challengebossabox.domain.dto.UsuarioDTO;
+import com.aquilesdias.challengebossabox.exception.DuplicateDataException;
 import com.aquilesdias.challengebossabox.repositories.UsuarioRepository;
 import com.aquilesdias.challengebossabox.services.JwtService;
 import jakarta.validation.Valid;
@@ -40,10 +41,11 @@ public class UsuarioController {
 
     @PostMapping("register")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity register(@RequestBody UsuarioDTO usuario){
+    public ResponseEntity register(@RequestBody @Valid UsuarioDTO usuario){
 
         if(repository.findByUsername(usuario.username()) != null ){
-            return ResponseEntity.badRequest().build();
+            throw new DuplicateDataException("Sorry, the username you entered already exists. " +
+                    "Please choose a different username.");
         }
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(usuario.password());
