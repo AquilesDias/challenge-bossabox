@@ -1,5 +1,6 @@
 package com.aquilesdias.challengebossabox.domain;
 
+import com.aquilesdias.challengebossabox.domain.dto.UsuarioDTO;
 import com.aquilesdias.challengebossabox.domain.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,12 @@ public class Usuario implements UserDetails {
         this.username = usuario;
         this.password = password;
         this.userRole = userRole;
+    }
+
+    public Usuario(UsuarioDTO usuarioDTO){
+        this.username = usuarioDTO.username() ;
+        this.password = usuarioDTO.password();
+        this.userRole = usuarioDTO.role();
     }
 
     @Override
